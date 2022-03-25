@@ -1,6 +1,8 @@
 class Api::HeroesController < ApplicationController
-  before_action :set_hero, only: %i[ show update destroy ]
+  include Authenticable
 
+  before_action :set_hero, only: %i[ show update destroy ]
+  before_action :authenticate_with_token, except: %i[index show]
   # GET /heroes
   def index
     @heroes = Hero.search(params[:term]).sorted_by_name
